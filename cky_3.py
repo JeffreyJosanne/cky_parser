@@ -99,9 +99,12 @@ class CKY:
         self.unaryFill()
         self.binaryScan()
         # Replace the line below for Q6
-        totalParsersNumber = len(self.matrix[0][self.n-1].labels())
-        # print('------------------'+totalParsersNumber+'-----------------')
-        if totalParsersNumber != 0:
+        if self.grammar.start() in self.matrix[0][self.n-1].labels():
+            # Calculating the number of successful analyses
+            totalParsersNumber = 0
+            for i in self.matrix[0][self.n-1].labels():
+                if i == self.grammar.start():
+                    totalParsersNumber += 1
             return totalParsersNumber
         else:
             return False
