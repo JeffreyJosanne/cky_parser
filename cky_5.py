@@ -99,6 +99,7 @@ class CKY:
         self.unaryFill()
         self.binaryScan()
         # Replace the line below for Q6
+        #######       Done with building the CKY parse matrix        ########
         totalParsersNumber = 0
         totalParsersNumber = len(self.matrix[0][self.n-1].labels())
         # print('------------------'+totalParsersNumber+'-----------------')
