@@ -58,7 +58,7 @@ class CKY:
             else:
                 self.binary[rhs].append(lhs)
 
-    def recognise(self,tokens,verbose=False):
+    def parse(self,tokens,verbose=False):
         '''replace/expand this docstring. Your docs need NOT
         say anything more about the verbose option.
 
@@ -163,6 +163,38 @@ build something at those positions.
                         s_label = Label(s, s1, s2)
                         cell.addLabel(s_label, 1)
                         # cell.unaryUpdate(s,1)
+        
+   
+    def create_trees(self,node,tree):
+        '''
+        A plain binary tree post-order traversal seems to be a better fit for building up trees
+        from the matrix 
+        '''
+        if node.is_parent:
+            tree.append("(")
+        symbol_str=""
+        if type(node.symbol()) is not str:
+            symbol_str=node.symbol().__str__()
+        else:
+            symbol_str=node.symbol()
+        tree.append(symbol_str)
+        if  node.return_lhs():
+            self.create_trees(node.return_lhs(),tree)
+        if node.return_rhs():
+            self.create_trees(node.return_rhs(),tree)
+        if node.return_is_parent():
+            tree.append(")")
+        return tree
+    
+    def firstTree(self):
+        label = self.matrix[0][self.n-1]._labels[0]
+        start_symbol = self.grammar.start()
+        tree = self.create_trees(label,[]) 
+        print(tree)
+        nltk_tree = nltk.tree.Tree.fromstring(' '.join(tree))
+        nltk_tree.draw()
+        return nltk_tree
+    
 
 # helper methods from cky_print
 CKY.pprint=CKY_pprint
@@ -215,14 +247,19 @@ class Label:
     Includes a terminal or non-terminal symbol, possibly other
     information.  Add more to this docstring when you start using this
     class'''
-    def __init__(self,symbol, child_1 = None, child_2 = None):
+    def __init__(self,symbol, lhs = None, rhs = None):
         '''Create a label from a symbol and ...
         :type symbol: a string (for terminals) or an nltk.grammar.Nonterminal
         :param symbol: a terminal or non-terminal
         '''
         self._symbol=symbol
-        self._child_1=child_1
-        self._child_2=child_2
+        self._lhs=lhs
+        self._rhs=rhs
+        if(self._lhs or self._rhs):
+            self.is_parent = True
+        else:
+            self.is_parent = False
+
         # augment as appropriate, with comments
 
     def __str__(self):
@@ -237,9 +274,12 @@ class Label:
     def symbol(self):
         return self._symbol
 
-    def return_child_1(self):
-        return _child_1
+    def return_lhs(self):
+        return self._lhs
 
-    def return_child_2(self):
-        return _child_2
+    def return_rhs(self):
+        return self._rhs
+
+    def return_is_parent(self):
+        return self.is_parent
     # Add more methods as required, with docstring and comments
