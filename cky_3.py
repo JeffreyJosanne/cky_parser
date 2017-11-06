@@ -100,8 +100,7 @@ class CKY:
         self.binaryScan()
         # Replace the line below for Q6
         if self.grammar.start() in self.matrix[0][self.n-1].labels():
-            # Calculating the number of successful analyses
-            totalParsersNumber = 0
+            totalParsersNumber = 0 # count for every correct parser
             for i in self.matrix[0][self.n-1].labels():
                 if i == self.grammar.start():
                     totalParsersNumber += 1
@@ -120,7 +119,7 @@ class CKY:
         for r in range(self.n-1):
             cell=self.matrix[r][r+1]
             word=self.words[r]
-            cell.addLabel(word)
+            cell.addLabel((word))
             cell.unaryUpdate(word)
 
     def binaryScan(self):
@@ -176,7 +175,7 @@ class Cell:
         self.matrix=matrix
         self._labels=[]
 
-    def addLabel(self,label):
+    def addLabel(self,label,depth=0,recursive=False):
         self._labels.append(label)
 
     def labels(self):

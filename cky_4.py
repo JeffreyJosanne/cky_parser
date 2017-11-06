@@ -99,6 +99,7 @@ class CKY:
         self.unaryFill()
         self.binaryScan()
         # Replace the line below for Q6
+        totalParsersNumber = 0
         totalParsersNumber = len(self.matrix[0][self.n-1].labels())
         # print('------------------'+totalParsersNumber+'-----------------')
         if totalParsersNumber != 0:
@@ -117,8 +118,8 @@ class CKY:
         for r in range(self.n-1):
             cell=self.matrix[r][r+1]
             word=self.words[r]
-            cell.addLabel(word)
-            cell.unaryUpdate(word)
+            cell.addLabel(Label(word))
+            # cell.unaryUpdate(word)
 
     def binaryScan(self):
         '''(The heart of the implementation.)
@@ -155,11 +156,13 @@ build something at those positions.
         cell=self.matrix[start][end]
         for s1 in self.matrix[start][mid].labels():
             for s2 in self.matrix[mid][end].labels():
-                if (s1,s2) in self.binary:
-                    for s in self.binary[(s1,s2)]:
-                        self.log("%s -> %s %s", s, s1, s2, indent=1)
-                        cell.addLabel(s)
-                        cell.unaryUpdate(s,1)
+                if (s1.symbol(),s2.symbol()) in self.binary:
+                    for s in self.binary[(s1.symbol(),s2.symbol())]:
+                        # print('----------reached here-----------')
+                        self.log("%s -> %s %s", s.symbol(), s1.symbol(), s2.symbol(), indent=1)
+                        s_label = Label(s, s1, s2)
+                        cell.addLabel(s_label, 1)
+                        # cell.unaryUpdate(s,1)
 
 # helper methods from cky_print
 CKY.pprint=CKY_pprint
@@ -173,13 +176,15 @@ class Cell:
         self.matrix=matrix
         self._labels=[]
 
-    def addLabel(self,label):
-        self._labels.append(label)
+    def addLabel(self,label,depth=0,recursive=False):
+        if label.symbol() not in [l.symbol() for l in self.labels()]:
+            self._labels.append(label)
+            self.unaryUpdate(label,depth,recursive)
 
     def labels(self):
         return self._labels
 
-    def unaryUpdate(self,symbol,depth=0,recursive=False):
+    def unaryUpdate(self,label,depth=0,recursive=False):
         '''
         args: terminal (word from the sentence, if depth is 0) / non-terminals if depth is > 0
 
@@ -188,13 +193,16 @@ class Cell:
         where terminal or non-terminal (patterns of interest) will be stored as the values with keys as the parent of the rule 
         (lhs in a production )
         '''
+        symbol = label.symbol()
         if not recursive:
             self.log(str(symbol),indent=depth)
         if symbol in self.matrix.unary:
             for parent in self.matrix.unary[symbol]:
                 self.matrix.log("%s -> %s",parent,symbol,indent=depth+1)
-                self.addLabel(parent)
-                self.unaryUpdate(parent,depth+1,True)
+                # self.addLabel(parent)
+                # self.unaryUpdate(parent,depth+1,True)
+                parent_label = Label(parent, label)
+                self.addLabel(parent_label,depth+1,True)
 
 # helper methods from cky_print
 Cell.__str__=Cell__str__
@@ -207,14 +215,14 @@ class Label:
     Includes a terminal or non-terminal symbol, possibly other
     information.  Add more to this docstring when you start using this
     class'''
-    def __init__(self,symbol,
-                 # Fill in here, if more needed
-                 ):
+    def __init__(self,symbol, child_1 = None, child_2 = None):
         '''Create a label from a symbol and ...
         :type symbol: a string (for terminals) or an nltk.grammar.Nonterminal
         :param symbol: a terminal or non-terminal
         '''
         self._symbol=symbol
+        self._child_1=child_1
+        self._child_2=child_2
         # augment as appropriate, with comments
 
     def __str__(self):
@@ -228,4 +236,10 @@ class Label:
 
     def symbol(self):
         return self._symbol
+
+    def return_child_1(self):
+        return _child_1
+
+    def return_child_2(self):
+        return _child_2
     # Add more methods as required, with docstring and comments
