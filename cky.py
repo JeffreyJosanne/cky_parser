@@ -103,8 +103,10 @@ class CKY:
         for r in range(self.n-1):
              # rows
              row=[]
-             for c in range(self.n):
-                 # columns
+             for c in range(self.n): 
+                 # columns, columns = row +1. This is done only in our implementation. Generally, it is 
+                 # a square matrix where row = column. Here we are storing the words too. So words take up
+                 # an extra column.
                  if c>r:
                      # This is one we care about, add a cell
                      row.append(Cell(r,c,self))
