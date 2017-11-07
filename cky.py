@@ -72,6 +72,22 @@ class CKY:
         :rtype: 
         :return:
 
+        pre-condition illustration:
+        #    1   2   3  ...
+        # 0  .   .   .
+        # 1      .   .
+        # 2          .
+        # ...
+
+        post-condition illustration:
+        #    1   2   3  ...
+        # 0  X   A   S
+        # 1      Y   B
+        # 2          Z
+        # ...
+
+        where X, Y, Z are the words and A, B, S are non-terminals.
+
         '''
         self.verbose=verbose
         self.words = tokens
@@ -113,6 +129,23 @@ class CKY:
         i.e., words are added on the diagonal of the upper triangular matrix.
 
         returns: none
+
+        pre-condition illustration:
+        #    1   2   3  ...
+        # 0  .   .   .
+        # 1      .   .
+        # 2          .
+        # ...
+
+        post-condition illustration:
+        #    1   2   3  ...
+        # 0  X   .   .
+        # 1      Y   .
+        # 2          Z
+        # ...
+        
+        where X, Y, Z are the words.
+
         '''
         for r in range(self.n-1):
             cell=self.matrix[r][r+1]

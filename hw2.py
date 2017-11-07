@@ -109,6 +109,8 @@ for s in ["John gave a book to Mary.",
           "John told Mary that he will book a flight today.",
           "hwerwe sfsdf sdvsdv"]:
     print(s, chart2.recognise(tokenise(s)))
+    chart2.pprint()
+
     # print(s, chart2.recognise(tokenise(s), True))
 
 # Task 5
