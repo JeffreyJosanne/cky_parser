@@ -84,11 +84,11 @@ grammar2=parse_grammar([
 "Adv -> 'today'"
 ])
 
-print(grammar) #the simpler grammar
+# print(grammar) #the simpler grammar
 chart=CKY(grammar)
  #this illustrates tracing of a very simple sentence; feel free to try others.
-chart.recognise(tokenise("the frogs swim"),True)
-chart.pprint()
+chart.recognise(tokenise("the frogs swim"))
+# chart.pprint()
 
 #build a chart with the larger grammar
 chart2=CKY(grammar2)
@@ -106,8 +106,7 @@ for s in ["John gave a book to Mary.",
           "Book a flight to NYC.",
           "Can you book a flight to London?",
           "Why did John book the flight?",
-          "John told Mary that he will book a flight today.",
-          "hwerwe sfsdf sdvsdv"]:
+          "John told Mary that he will book a flight today."]:
     print(s, chart2.recognise(tokenise(s)))
     # print(s, chart2.recognise(tokenise(s), True))
 
