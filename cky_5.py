@@ -143,10 +143,6 @@ build something at those positions.
 
     def maybeBuild(self, start, mid, end):
         '''
-        args: 
-        start - m
-        mid - m + 1
-        end - m + 2
         
         Checks for every co-occurring adjacent terminals or non-terminals (rhs elements) in the binary dictionary and 
         returns the value of the rhs key from the binary dictionary. 

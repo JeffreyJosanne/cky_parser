@@ -54,9 +54,9 @@ class CKY:
             lhs=production.lhs()
             assert(len(rhs)>0 and len(rhs)<=2) # Cross-checking to CNF rule that states only 1 or 2 child(ren) are allowed 
             if len(rhs)==1:
-                self.unary[rhs[0]].append(lhs)
+                self.unary[rhs[0]].append(lhs)   # unary rules dictionary are filled
             else:
-                self.binary[rhs].append(lhs)
+                self.binary[rhs].append(lhs)     # binary rules dictionary are filled
 
     def recognise(self,tokens,verbose=False):
         '''replace/expand this docstring. Your docs need NOT
@@ -91,7 +91,7 @@ class CKY:
         '''
         self.verbose=verbose
         self.words = tokens
-        self.n = len(self.words)+1
+        self.n = len(self.words)+1    # +1 for readability despite zero indexing feature
         self.matrix = []
         # We index by row, then column
         #  So Y below is 1,2 and Z is 0,3
@@ -117,12 +117,12 @@ class CKY:
         self.unaryFill()
         self.binaryScan()
         # Replace the line below for Q6
-        totalParsersNumber = len(self.matrix[0][self.n-1].labels())
+        totalParsersNumber = len(self.matrix[0][self.n-1].labels())    # Get the number of labels in the top right corner of the tree. For the start of the sentence
         # print('------------------'+totalParsersNumber+'-----------------')
         if totalParsersNumber != 0:
             return totalParsersNumber
         else:
-            return False
+            return False   # In case the grammar doen't fit a sentence, you reach here.
     def unaryFill(self):
         '''
         args: none
@@ -152,8 +152,8 @@ class CKY:
         for r in range(self.n-1):
             cell=self.matrix[r][r+1]
             word=self.words[r]
-            cell.addLabel(word)
-            cell.unaryUpdate(word)
+            cell.addLabel(word)    # Adds the word to the given cell.
+            cell.unaryUpdate(word)  # Calls unaryUpdate, where addLabel() is called again. This will result in redundancy of labels.
 
     def binaryScan(self):
         '''(The heart of the implementation.)
@@ -195,8 +195,8 @@ build something at those positions.
                 if (s1,s2) in self.binary:
                     for s in self.binary[(s1,s2)]:
                         self.log("%s -> %s %s", s, s1, s2, indent=1)
-                        cell.addLabel(s)
-                        cell.unaryUpdate(s,1)
+                        cell.addLabel(s)    # Adds the word to the given cell.
+                        cell.unaryUpdate(s,1)   # Calls unaryUpdate, where addLabel() is called again. This will result in redundancy of labels.
 
 # helper methods from cky_print
 CKY.pprint=CKY_pprint
@@ -230,8 +230,8 @@ class Cell:
         if symbol in self.matrix.unary:
             for parent in self.matrix.unary[symbol]:
                 self.matrix.log("%s -> %s",parent,symbol,indent=depth+1)
-                self.addLabel(parent)
-                self.unaryUpdate(parent,depth+1,True)
+                self.addLabel(parent)   # Adds the label but unaryUpdate() below does it again.
+                self.unaryUpdate(parent,depth+1,True)   # recursion enabled with depth incremented, which depicts the traversal is moving upwards 
 
 # helper methods from cky_print
 Cell.__str__=Cell__str__
