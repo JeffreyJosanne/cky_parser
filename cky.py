@@ -176,14 +176,16 @@ build something at those positions.
 
     def maybeBuild(self, start, mid, end):
         '''
-        args: 
-        start - m
-        mid - m + 1
-        end - m + 2
+        start - commencing index of first cell. 
+        end - ending of the first cell
+        stop - ending of the second cell.
         
+        Objective of this function is to compare two cells and check for rules from the binary rules. 
+
         Checks for every co-occurring adjacent terminals or non-terminals (rhs elements) in the binary dictionary and 
         returns the value of the rhs key from the binary dictionary. 
-        Then it is passed back to the unaryUpdate function where the found elements are stacked above the current co-occurring adjacent terminals or non-terminals in the matrix.
+        Then it is passed back to the unaryUpdate function where the found elements are stacked 
+        above the current co-occurring adjacent terminals or non-terminals in the matrix.
 
         '''
         self.log("%s--%s--%s:",start, mid, end)

@@ -87,8 +87,8 @@ grammar2=parse_grammar([
 print(grammar) #the simpler grammar
 chart=CKY(grammar)
  #this illustrates tracing of a very simple sentence; feel free to try others.
-chart.recognise(tokenise("the frogs swim"),True)
-chart.pprint()
+# chart.recognise(tokenise("the frogs swim"),True)
+# chart.pprint()
 
 #build a chart with the larger grammar
 chart2=CKY(grammar2)
@@ -99,16 +99,9 @@ chart2=CKY(grammar2)
 
 # The sentences to examine.
 #
-for s in ["John gave a book to Mary.",
-          "John gave Mary a book.",
-          "John gave Mary a nice drawing book.",
-          "John ate salad with mushrooms with a fork.",
-          "Book a flight to NYC.",
-          "Can you book a flight to London?",
-          "Why did John book the flight?",
-          "John told Mary that he will book a flight today.",
-          "hwerwe sfsdf sdvsdv"]:
-    print(s, chart2.recognise(tokenise(s)))
+for s in [
+          "Book a flight to NYC."]:
+    print(s, chart2.recognise(tokenise(s),True))
     chart2.pprint()
 
     # print(s, chart2.recognise(tokenise(s), True))

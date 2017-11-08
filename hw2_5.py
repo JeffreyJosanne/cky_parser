@@ -106,13 +106,19 @@ for s in ["John gave a book to Mary.",
           "Book a flight to NYC.",
           "Can you book a flight to London?",
           "Why did John book the flight?",
-          "John told Mary that he will book a flight today.",
-          "hwerwe sfsdf sdvsdv"]:
+          "John told Mary that he will book a flight today."]:
     print(s, chart2.parse(tokenise(s)))
     # print(s, chart2.recognise(tokenise(s), True)) # If you wanna trace out!
 
 # Task 5
-for s in ["John gave a book to Mary."]:
+for s in ["John gave a book to Mary.",
+          "John gave Mary a book.",
+          "John gave Mary a nice drawing book.",
+          "John ate salad with mushrooms with a fork.",
+          "Book a flight to NYC.",
+          "Can you book a flight to London?",
+          "Why did John book the flight?",
+          "John told Mary that he will book a flight today."]:
     print(s, chart2.parse(tokenise(s)))
     print(chart2.firstTree().pprint())
 

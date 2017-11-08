@@ -190,10 +190,10 @@ build something at those positions.
     def firstTree(self):
         label = self.matrix[0][self.n-1]._labels[0]
         start_symbol = self.grammar.start()
-        tree = self.create_trees(label,[]) 
+        tree = self.create_trees(label,[])
         print(tree)
         nltk_tree = nltk.tree.Tree.fromstring(' '.join(tree))
-        nltk_tree.draw()
+        # nltk_tree.draw()  # Uncomment if you wanna draw the given bracketed grammar
         return nltk_tree
     
 
