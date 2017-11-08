@@ -224,6 +224,10 @@ class Cell:
         Then checks for the terminal or non-terminal in the unary dictionary, 
         where terminal or non-terminal (patterns of interest) will be stored as the values with keys as the parent of the rule 
         (lhs in a production )
+
+        .. note:: recursive variable by default assigns False to itself.
+        .. warning:: make sure 1 variable is passed.
+        .. todo:: cmake sure atleast one variable is present and that is label / string.
         '''
         if not recursive:
             self.log(str(symbol),indent=depth)

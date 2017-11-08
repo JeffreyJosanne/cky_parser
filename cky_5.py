@@ -164,8 +164,13 @@ build something at those positions.
    
     def create_trees(self,node,tree):
         '''
-        A plain binary tree post-order traversal seems to be a better fit for building up trees
-        from the matrix 
+        A plain binary tree pre-order traversal seems to be a better fit for building up trees
+        from the matrix. The traversal moves along the parent node first, left nodes then and right nodes later. 
+        Before inserting a parent node, it prefixes with '(' and after adding a parent node it adds a ')'. As recursions are
+        timely placed, parents are not just enclosed by brackets as it would seem.
+
+        args: node - 
+
         '''
         if node.is_parent:
             tree.append("(")
@@ -184,6 +189,12 @@ build something at those positions.
         return tree
     
     def firstTree(self):
+        ''' 
+        A helper function which makes call to creat_trees( which is a recursive implementation of tree traversal)
+        that returns the grammar formalism.
+        args: None required. self (its own) object has matrix to work on.abs
+        returns: an nltk tree object that represents the first parser.
+        '''
         label = self.matrix[0][self.n-1]._labels[0]
         start_symbol = self.grammar.start()
         tree = self.create_trees(label,[])
@@ -248,6 +259,10 @@ class Label:
         '''Create a label from a symbol and ...
         :type symbol: a string (for terminals) or an nltk.grammar.Nonterminal
         :param symbol: a terminal or non-terminal
+        :type lhs: a string (for terminals) or an nltk.grammar.Nonterminal
+        :param lhs: a terminal or non-terminal labelled as left hand child of the symbol variable
+        :type rhs: a string (for terminals) or an nltk.grammar.Nonterminal
+        :param rhs: a terminal or non-terminal labelled as left hand child of the symbol variable
         '''
         self._symbol=symbol
         self._lhs=lhs
@@ -272,11 +287,20 @@ class Label:
         return self._symbol
 
     def return_lhs(self):
+        ''' 
+        returns the lhs label
+        '''
         return self._lhs
 
     def return_rhs(self):
+        ''' 
+        returns the rhs label
+        '''
         return self._rhs
 
     def return_is_parent(self):
+        ''' 
+        returns boolean based on if the given symbol is a parent
+        '''
         return self.is_parent
     # Add more methods as required, with docstring and comments
